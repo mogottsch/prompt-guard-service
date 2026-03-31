@@ -1,5 +1,9 @@
 # prompt-guard-service
 
+[![CI](https://github.com/mogottsch/prompt-guard-service/actions/workflows/ci.yml/badge.svg)](https://github.com/mogottsch/prompt-guard-service/actions/workflows/ci.yml)
+[![Release](https://github.com/mogottsch/prompt-guard-service/actions/workflows/release.yml/badge.svg)](https://github.com/mogottsch/prompt-guard-service/actions/workflows/release.yml)
+[![GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Fmogottsch%2Fprompt--guard--service-blue)](https://github.com/mogottsch/prompt-guard-service/pkgs/container/prompt-guard-service)
+
 A small FastAPI service for Prompt Guard inference using ONNX Runtime.
 
 ## Stack
@@ -83,19 +87,51 @@ uv run pytest
 
 ## Docker
 
-Build:
+Build locally:
 
 ```bash
 docker build -t prompt-guard-service:dev .
 ```
 
-Run:
+Run local image:
 
 ```bash
 docker run --rm -p 8000:8000 \
   -e PROMPT_GUARD_MODEL_PATH=/app/model/model.onnx \
   -v $(pwd)/model:/app/model \
   prompt-guard-service:dev
+```
+
+## Pull and run the published image
+
+Pull latest:
+
+```bash
+docker pull ghcr.io/mogottsch/prompt-guard-service:latest
+```
+
+Pull a pinned release tag:
+
+```bash
+docker pull ghcr.io/mogottsch/prompt-guard-service:v0.1.0
+```
+
+Run the published image:
+
+```bash
+docker run --rm -p 8000:8000 \
+  -e PROMPT_GUARD_MODEL_PATH=/app/model/model.onnx \
+  -v $(pwd)/model:/app/model:ro \
+  ghcr.io/mogottsch/prompt-guard-service:latest
+```
+
+Smoke test it:
+
+```bash
+curl http://localhost:8000/health
+curl -X POST http://localhost:8000/predict \
+  -H 'content-type: application/json' \
+  -d '{"text":"hello world"}'
 ```
 
 ## CI and image publishing
@@ -106,14 +142,16 @@ What it does:
 - runs pytest
 - runs ruff
 - builds a multi-arch image for `linux/amd64` and `linux/arm64`
-- pushes to `ghcr.io/${OWNER}/prompt-guard-service`
+- pushes to `ghcr.io/mogottsch/prompt-guard-service`
 - adds OCI labels including the source repository
 - emits build provenance attestation
+- creates GitHub releases for version tags via `.github/workflows/release.yml`
 
 Expected image names:
 - `ghcr.io/mogottsch/prompt-guard-service:latest`
 - `ghcr.io/mogottsch/prompt-guard-service:main`
 - `ghcr.io/mogottsch/prompt-guard-service:sha-<commit>`
+- `ghcr.io/mogottsch/prompt-guard-service:v0.1.0`
 - semver tags on `v*` git tags
 
 Important GHCR note:
