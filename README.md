@@ -134,30 +134,9 @@ curl -X POST http://localhost:8000/predict \
   -d '{"text":"hello world"}'
 ```
 
-## CI and image publishing
+## Releases
 
-GitHub Actions workflow: `.github/workflows/ci.yml`
-
-What it does:
-- runs pytest
-- runs ruff
-- builds a multi-arch image for `linux/amd64` and `linux/arm64`
-- pushes to `ghcr.io/mogottsch/prompt-guard-service`
-- adds OCI labels including the source repository
-- emits build provenance attestation
-- creates GitHub releases for version tags via `.github/workflows/release.yml`
-
-Expected image names:
-- `ghcr.io/mogottsch/prompt-guard-service:latest`
-- `ghcr.io/mogottsch/prompt-guard-service:main`
-- `ghcr.io/mogottsch/prompt-guard-service:sha-<commit>`
-- `ghcr.io/mogottsch/prompt-guard-service:v0.1.0`
-- semver tags on `v*` git tags
-
-Important GHCR note:
-- GitHub still creates new container packages as private by default on first publish.
-- The workflow is fully ready to publish, but the first package visibility change to `public` may still need one manual GitHub UI step unless GitHub finally fixes that cringe limitation.
-- After that, image pulls can be public and anonymous.
+- Release page: https://github.com/mogottsch/prompt-guard-service/releases
 
 ## Notes
 
