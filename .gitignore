@@ -13,3 +13,4 @@ htmlcov/
 .env.*
 !.env.example
 .model/
+model/

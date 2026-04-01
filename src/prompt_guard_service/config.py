@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"
     port: int = 8000
     log_level: str = "info"
-    model_path: str = Field(default="./model/model.onnx")
+    model_path: str = Field(default="/app/model/model.quant.onnx")
     tokenizer_path: str | None = None
     lazy_load_model: bool = False
 

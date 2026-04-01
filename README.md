@@ -59,12 +59,14 @@ Response:
 
 Environment variables use the `PROMPT_GUARD_` prefix.
 
-- `PROMPT_GUARD_MODEL_PATH` — path to ONNX model file, default `./model/model.onnx`
+- `PROMPT_GUARD_MODEL_PATH` — path to ONNX model file, default `/app/model/model.quant.onnx`
 - `PROMPT_GUARD_TOKENIZER_PATH` — optional tokenizer path, defaults to the parent directory of `MODEL_PATH`
 - `PROMPT_GUARD_LAZY_LOAD_MODEL` — set to `true` to defer model loading until first request
 - `PROMPT_GUARD_HOST` — default `0.0.0.0`
 - `PROMPT_GUARD_PORT` — default `8000`
 - `PROMPT_GUARD_LOG_LEVEL` — default `info`
+
+The published image is intended to be self-contained: model files are baked into the image at build time.
 
 ## Local development
 
@@ -96,10 +98,7 @@ docker build -t prompt-guard-service:dev .
 Run local image:
 
 ```bash
-docker run --rm -p 8000:8000 \
-  -e PROMPT_GUARD_MODEL_PATH=/app/model/model.onnx \
-  -v $(pwd)/model:/app/model \
-  prompt-guard-service:dev
+docker run --rm -p 8000:8000 prompt-guard-service:dev
 ```
 
 ## Pull and run the published image
@@ -120,8 +119,6 @@ Run the published image:
 
 ```bash
 docker run --rm -p 8000:8000 \
-  -e PROMPT_GUARD_MODEL_PATH=/app/model/model.onnx \
-  -v $(pwd)/model:/app/model:ro \
   ghcr.io/mogottsch/prompt-guard-service:latest
 ```
 
