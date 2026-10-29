@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardApproval": true,
+  "automerge": false,
+  "platformAutomerge": false,
+  "lockFileMaintenance": {
+    "enabled": false
+  },
+  "enabledManagers": [
+    "dockerfile",
+    "pep621",
+    "github-actions"
+  ],
+  "packageRules": [
+    {
+      "description": "Ignore the native Dockerfile extractor's false image match in the Python heredoc: from pathlib import Path.",
+      "matchManagers": ["dockerfile"],
+      "matchFileNames": ["Dockerfile"],
+      "matchPackageNames": ["pathlib"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "matchDatasources": ["docker"],
+      "pinDigests": true
+    }
+  ]
+}
